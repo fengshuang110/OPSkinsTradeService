@@ -19,4 +19,5 @@ class QueryParameterKeys
     const PER_PAGE = 'per_page';
     const IDS = 'ids';
     const SORT = 'sort';
+    const STEAM_ID = 'steam_id';
 }

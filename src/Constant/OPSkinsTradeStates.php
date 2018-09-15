@@ -4,7 +4,7 @@ namespace OmerKocaoglu\OPSkinsTradeService\Constant;
 
 class OPSkinsTradeStates
 {
-    const ACTIVE = 2;
+    const ACTIVE = 2; 
     const ACCEPTED = 3;
     const EXPIRED = 5;
     const CANCELED = 6;

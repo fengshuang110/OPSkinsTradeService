@@ -133,14 +133,11 @@ class UserInventoryService extends ServiceBase
     /**
      * @return null|InventoryResponseModel
      */
-    public function getInventory()
+    public function getInventory($uid='')
     {
-        Assert::isNotNull($this->trade_url);
-
-        $this->uid = (new TradeUrlService())->getUidFromTradeUrl($this->trade_url);
-
-        Assert::isPositive(intval($this->uid));
-
+        if(!empty($uid)){
+            $this->uid = $uid;
+        }
         $url = sprintf(OPSkinsTradeInterfaces::GET_INVENTORY);
 
         if ($this->uid !== 0) {

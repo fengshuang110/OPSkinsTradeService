@@ -208,6 +208,53 @@ class TradeOfferService extends ServiceBase
         $this->message = $message;
         return $this;
     }
+     /**
+     * @param string $steamId
+     * @return SendTradeOfferResponseModel
+     */
+    public function sendSteamOffer($steamId){
+        Assert::isString($this->two_fa_code);
+        Assert::isNotNull($this->two_fa_code);
+        Assert::isNotEmptyArray($this->item_id_list);
+        $url = sprintf(
+            OPSkinsTradeInterfaces::SEND_STEAM_OFFER,
+            $this->api_key !== null ? $this->api_key : $this->getServiceConfig()->api_key);
+
+        /** @var string[] $parameter_list */
+        $parameter_list = [];
+
+        if ($this->two_fa_code !== null) {
+            $parameter_list[QueryParameterKeys::TWO_FACTOR_CODE] = $this->two_fa_code;
+        }
+         if ($this->two_fa_code !== null) {
+            $parameter_list[QueryParameterKeys::STEAM_ID] = $steamId;
+        }
+
+        if (count($this->item_id_list) > 0) {
+            $parameter_list[QueryParameterKeys::ITEMS] = implode(',', $this->item_id_list);
+        }
+
+        if ($this->message !== null) {
+            $parameter_list[QueryParameterKeys::MESSAGE] = $this->message;
+        }
+
+        $request_url = substr($url, 0, -1);
+
+        $request = new Request(
+            HttpMethods::POST,
+            $request_url,
+            [
+                'content-type' => ContentTypes::APPLICATION_JSON
+            ],
+            json_encode($parameter_list)
+        );
+
+        $response = $this->getClient()->send($request);
+        /** @var SendTradeOfferResponseModel $send_trade_offer_response_model */
+        $send_trade_offer_response_model = $this->getResponseModelFromResponse($request_url, $response, new Type(SendTradeOfferResponseModel::class));
+
+        return $send_trade_offer_response_model;
+    }
 
     /**
      * @return SendTradeOfferResponseModel
