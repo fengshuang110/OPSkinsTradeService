@@ -320,9 +320,7 @@ class TradeOfferService extends ServiceBase
             OPSkinsTradeInterfaces::GET_OFFER,
             $this->api_key !== null ? $this->api_key : $this->getServiceConfig()->api_key);
 
-        if (count($this->offer_id_list) > 0) {
-            $url .= $this->createQueryString(QueryParameterKeys::OFFER_ID, implode(',', $this->offer_id_list));
-        }
+        $url .= $this->createQueryString(QueryParameterKeys::OFFER_ID, $offer_id);
 
         $request_url = substr($url, 0, -1);
         $response = $this->getClient()->get($request_url);
